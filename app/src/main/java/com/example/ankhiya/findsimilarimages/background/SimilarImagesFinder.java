@@ -8,6 +8,7 @@ import com.example.ankhiya.findsimilarimages.utils.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ankhiya on 3/19/17.
@@ -21,10 +22,11 @@ public class SimilarImagesFinder {
 
     private HashMap<String,String> mImageHashMap;
     private ArrayList<String> imagesToFindForSimilarity; // all images
-    private ArrayList<String> similarImages; // this will contain allthe file paths who have similar hash
+    private ArrayList<String> similarImages; // this will contain all the file paths who have similar hash
     private String mFolderPath;
     private OnSearchFinished mOnSearchFinished;
     private Context mContext;
+    private HashMap<String,String> mImageHashMapTemp;
 
     public interface OnSearchFinished {
         void similarImagesPaths(ArrayList<String> paths);
@@ -35,6 +37,7 @@ public class SimilarImagesFinder {
         similarImages = new ArrayList<>();
         mImageHashMap = new HashMap<>();
         mContext = context;
+        mImageHashMapTemp = new HashMap<>();
     }
 
     /**
@@ -56,8 +59,15 @@ public class SimilarImagesFinder {
                 mImageHashMap.put(file,hash);
             }
         }
-
         // check for similarity
+        for (Map.Entry<String, String> entry : mImageHashMap.entrySet()) {
+            String file = entry.getKey();
+            String hash = entry.getValue();
+
+            if(!(mImageHashMapTemp.containsValue(hash))){
+                similarImages.add(file);
+            }
+        }
     }
 
     private void getAllImageFiles() {
