@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.ankhiya.findsimilarimages.R;
+import com.example.ankhiya.findsimilarimages.operations.SimilarImagesFinder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * Use the {@link DirectoryChooserFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DirectoryChooserFragment extends DialogFragment {
+public class DirectoryChooserFragment extends DialogFragment implements SimilarImagesFinder.OnSearchFinished {
 
     private static final String KEY_DIRECTORY_PATH = "basePath";
 
@@ -32,6 +34,7 @@ public class DirectoryChooserFragment extends DialogFragment {
     private String mCurrentDirectory;
     private ArrayList<String> mListFiles;
     private ListView mListView;
+    private Button mSearchButton;
     private ArrayAdapter<String> mListFilesAdapter;
 
     public DirectoryChooserFragment() {
@@ -67,8 +70,16 @@ public class DirectoryChooserFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mListView = (ListView) view.findViewById(R.id.files_list);
+        mSearchButton = (Button) view.findViewById(R.id.search_button);
         setUpListView();
         populateListOfFiles();
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SimilarImagesFinder(getActivity(),DirectoryChooserFragment.this).execute(mCurrentDirectory);
+            }
+        });
     }
 
     private void populateListOfFiles() {
@@ -79,7 +90,7 @@ public class DirectoryChooserFragment extends DialogFragment {
         File[] files = folder.listFiles();
         if(files != null) {
             for (File file : files) {
-                mListFiles.add(file.getAbsolutePath());
+                mListFiles.add(file.getPath());
             }
             mListFilesAdapter.notifyDataSetChanged();
         }
@@ -106,6 +117,13 @@ public class DirectoryChooserFragment extends DialogFragment {
         else {
             Toast.makeText(getActivity(),"Please select folder",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void similarImagesPaths(ArrayList<String> paths) {
+        mListFiles.clear();
+        mListFiles.addAll(paths);
+        mListFilesAdapter.notifyDataSetChanged();
     }
 
     public static class DirectoryChooserConfig {

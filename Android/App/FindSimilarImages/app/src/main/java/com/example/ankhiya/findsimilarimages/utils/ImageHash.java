@@ -3,6 +3,7 @@ package com.example.ankhiya.findsimilarimages.utils;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,9 +48,9 @@ public class ImageHash {
 
     public static boolean isFileContentTypeImage(Context context, String filePath) {
         boolean imageType = false;
-        ContentResolver contentResolver = context.getContentResolver();
-        String contentType = contentResolver.getType(Uri.fromFile(new File(filePath)));
-        if (contentType != null && contentType.contains("image")) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(filePath);
+        String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (type != null && type.contains("image")) {
             imageType = true;
         }
         return imageType;
