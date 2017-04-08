@@ -28,7 +28,6 @@ public class SimilarImagesFinder extends AsyncTask<String,Void,ArrayList<String>
     private String mFolderPath;
     private OnSearchFinished mOnSearchFinished;
     private Context mContext;
-    private HashMap<String,String> mImageHashMapTemp;
     private ProgressDialog mLoadingProgressDialog;
 
     public interface OnSearchFinished {
@@ -40,7 +39,6 @@ public class SimilarImagesFinder extends AsyncTask<String,Void,ArrayList<String>
         similarImages = new ArrayList<>();
         mImageHashMap = new HashMap<>();
         mContext = context;
-        mImageHashMapTemp = new HashMap<>();
         mOnSearchFinished = listener;
     }
 
@@ -80,13 +78,17 @@ public class SimilarImagesFinder extends AsyncTask<String,Void,ArrayList<String>
                 mImageHashMap.put(file,hash);
             }
         }
+
+        HashMap<String,String> mImageHashMapTemp = new HashMap<>();
         // check for similarity
         for (Map.Entry<String, String> entry : mImageHashMap.entrySet()) {
             String file = entry.getKey();
             String hash = entry.getValue();
 
-            if(!(mImageHashMapTemp.containsValue(hash))){
+            if(mImageHashMapTemp.containsValue(hash)){
                 similarImages.add(file);
+            }else{
+                mImageHashMapTemp.put(file,hash);
             }
         }
     }
@@ -100,6 +102,7 @@ public class SimilarImagesFinder extends AsyncTask<String,Void,ArrayList<String>
             String[] allFiles = folder.list();
             for (String file : allFiles) {
                 // check if file is image
+                file = folder.getAbsolutePath() + "/"+file;
                 if (ImageHash.isFileContentTypeImage(mContext, file)) {
                     // adding all files in array for further proceed
                     imagesToFindForSimilarity.add(file);

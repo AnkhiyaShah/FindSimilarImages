@@ -2,7 +2,6 @@ package com.example.ankhiya.findsimilarimages.ui;
 
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -10,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.ankhiya.findsimilarimages.R;
 import com.example.ankhiya.findsimilarimages.operations.SimilarImagesFinder;
+import com.example.ankhiya.findsimilarimages.utils.FileModel;
+import com.example.ankhiya.findsimilarimages.utils.ListAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
 
     private String mBasePath;
     private String mCurrentDirectory;
-    private ArrayList<String> mListFiles;
+    private ArrayList<FileModel> mListFiles;
     private ListView mListView;
     private Button mSearchButton;
-    private ArrayAdapter<String> mListFilesAdapter;
+    private ListAdapter mListFilesAdapter;
 
     public DirectoryChooserFragment() {
         // Required empty public constructor
@@ -63,13 +63,13 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_directory_chooser, container, false);
+        return inflater.inflate(R.layout.activity_home, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mListView = (ListView) view.findViewById(R.id.files_list);
+//        mListView = (ListView) view.findViewById(R.id.files_list);
         mSearchButton = (Button) view.findViewById(R.id.search_button);
         setUpListView();
         populateListOfFiles();
@@ -90,20 +90,24 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
         File[] files = folder.listFiles();
         if(files != null) {
             for (File file : files) {
-                mListFiles.add(file.getPath());
+                FileModel model = new FileModel();
+                model.setName(file.getAbsolutePath());
+                mListFiles.add(model);
             }
             mListFilesAdapter.notifyDataSetChanged();
         }
     }
 
+
+
     private void setUpListView() {
-        mListFilesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mListFiles);
+        mListFilesAdapter = new ListAdapter(getActivity(),mListFiles);
         mListView.setAdapter(mListFilesAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String path = mListFiles.get(position);
-                onClickOnFile(path);
+                FileModel model = mListFiles.get(position);
+                onClickOnFile(model.getName());
             }
         });
     }
@@ -122,7 +126,11 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
     @Override
     public void similarImagesPaths(ArrayList<String> paths) {
         mListFiles.clear();
-        mListFiles.addAll(paths);
+        for (String path : paths){
+            FileModel model = new FileModel();
+            model.setName(path);
+            mListFiles.add(model);
+        }
         mListFilesAdapter.notifyDataSetChanged();
     }
 
@@ -131,10 +139,7 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
         private String directoryPath;
 
         public DirectoryChooserConfig() {
-            File file = Environment.getExternalStorageDirectory();
-            if (file != null) {
-                directoryPath = file.getAbsolutePath();
-            }
+
         }
 
         public DirectoryChooserConfig setAbsolutePath(String path) {

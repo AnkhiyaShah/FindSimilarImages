@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="7953210cdf1dc13a0380d70a2be9502a54995952">
+        sha1="31ae8312cd335c850a899725d7178f470ecb9e96">
         <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_79c4d3e2072399a3685651f1d088256008f90134/classes.dex" />
     </item>
     <item
@@ -57,21 +57,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
-        <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.2.0_a8b24e8c8c93eeadb6e5ab7b6b1023a2caf6e099/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/ankhiya/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.2.0/support-annotations-25.2.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
         <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.2.0_6307c9b275cd44c6fd4831155c7416a0eafee091/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.2.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.2.0_a8b24e8c8c93eeadb6e5ab7b6b1023a2caf6e099/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -108,6 +108,15 @@
         revision="25.0.2"
         sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
         <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.2.0_bcb5dae2c9fda4159692335e68e7028e49ea68f8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c9649557905bf7a80fca9e0d54cbcb7662627860">
+        <dex dex="/Users/ankhiya/Documents/Ankhiya/brij_project/FindSimilarImages/Android/App/FindSimilarImages/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.1_186ae72df49c3800c57724bf520dc584a49baf03/classes.dex" />
     </item>
 
 </items>

@@ -32,18 +32,19 @@ public class ImageHash {
                 digest.update(bytes, 0, read);
             }
             byte[] messageDigest = digest.digest();
-            StringBuilder hexString = new StringBuilder(); // String Builder
-            for (byte aMessageDigest : messageDigest) {
-                String h = Integer.toHexString(0xFF & aMessageDigest);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            md5 = hexString.toString();
+            md5 = convertHashToString(messageDigest);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return md5;
+    }
+
+    private static String convertHashToString(byte[] md5Bytes) {
+        String returnVal = "";
+        for (int i = 0; i < md5Bytes.length; i++) {
+            returnVal += Integer.toString(( md5Bytes[i] & 0xff ) + 0x100, 16).substring(1);
+        }
+        return returnVal.toUpperCase();
     }
 
     public static boolean isFileContentTypeImage(Context context, String filePath) {
