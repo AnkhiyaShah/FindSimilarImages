@@ -35,11 +35,13 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
     private Button mSearchButton;
     private Button mDeleteButton;
     private FilesAdapter mFilesAdapter;
+    private ArrayList<String> mPathsSelectionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mPathsSelectionList = new ArrayList<>();
         Intent intent = getIntent();
         if (intent != null) {
             mSearchMode = (SearchMode) intent.getSerializableExtra(KEY_SEARCH_MODE);
@@ -50,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SimilarImagesFinder(HomeActivity.this,HomeActivity.this).execute(mCurrentDirectory);
+                new SimilarImagesFinder(HomeActivity.this, HomeActivity.this).execute(mCurrentDirectory);
             }
         });
         mDeleteButton.setVisibility(View.GONE);
@@ -65,8 +67,8 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         populateListOfFiles();
     }
 
-    private void onDeleteFiles(){
-        for (FileModel model : mListFiles){
+    private void onDeleteFiles() {
+        for (FileModel model : mListFiles) {
             File file = new File(model.getName());
             file.delete();
         }
@@ -81,12 +83,13 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         setBasePath();
         mListFiles = new ArrayList<>();
         mCurrentDirectory = mBasePath;
+        mPathsSelectionList.add(mBasePath);
     }
 
     private void setUpRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         mRecyclerView.setLayoutManager(layoutManager);
-        mFilesAdapter = new FilesAdapter(this, mListFiles,this);
+        mFilesAdapter = new FilesAdapter(this, mListFiles, this);
         mRecyclerView.setAdapter(mFilesAdapter);
     }
 
@@ -118,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         mSearchButton.setVisibility(View.GONE);
         mDeleteButton.setVisibility(View.VISIBLE);
         mListFiles.clear();
-        for (String path : paths){
+        for (String path : paths) {
             FileModel model = new FileModel();
             model.setName(path);
             mListFiles.add(model);
@@ -129,12 +132,24 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
     @Override
     public void onFileSelectedListener(FileModel model) {
         File file = new File(model.getName());
-        if(file != null && file.exists() && file.isDirectory()){
+        if (file != null && file.exists() && file.isDirectory()) {
             mCurrentDirectory = model.getName();
+            mPathsSelectionList.add(model.getName());
+            populateListOfFiles();
+        } else {
+            Toast.makeText(this, "Please select folder", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mPathsSelectionList.size() > 1) {
+            mPathsSelectionList.remove(mPathsSelectionList.size() - 1);
+            mCurrentDirectory = mPathsSelectionList.get(mPathsSelectionList.size() - 1);
             populateListOfFiles();
         }
-        else {
-            Toast.makeText(this,"Please select folder",Toast.LENGTH_LONG).show();
+        else{
+            super.onBackPressed();
         }
     }
 }

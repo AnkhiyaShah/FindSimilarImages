@@ -68,8 +68,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileViewHold
 
         public void configureView(FileModel model){
             mTVFileName.setText(model.toString());
+            mIVFileImage.setImageDrawable(null);
             if(!model.isDirectory()){
                 mIVFileImage.setImageURI(Uri.fromFile(new File(model.getName())));
+            }else{
+                mIVFileImage.setImageResource(R.drawable.folder);
             }
         }
 
