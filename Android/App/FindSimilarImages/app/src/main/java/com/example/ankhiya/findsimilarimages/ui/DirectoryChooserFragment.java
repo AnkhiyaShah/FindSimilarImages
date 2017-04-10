@@ -73,13 +73,6 @@ public class DirectoryChooserFragment extends DialogFragment implements SimilarI
         mSearchButton = (Button) view.findViewById(R.id.search_button);
         setUpListView();
         populateListOfFiles();
-
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SimilarImagesFinder(getActivity(),DirectoryChooserFragment.this).execute(mCurrentDirectory);
-            }
-        });
     }
 
     private void populateListOfFiles() {

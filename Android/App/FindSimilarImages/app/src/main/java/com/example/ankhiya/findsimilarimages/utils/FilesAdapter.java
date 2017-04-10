@@ -24,14 +24,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileViewHold
     private ArrayList<FileModel> mFiles;
     private OnFileSelectedListener mOnFileSelectedListener;
 
-    public FilesAdapter(Context context,ArrayList<FileModel> models, OnFileSelectedListener listener){
+    public FilesAdapter(Context context, ArrayList<FileModel> models, OnFileSelectedListener listener) {
         mContext = context;
         mFiles = new ArrayList<>();
         mFiles.addAll(models);
         mOnFileSelectedListener = listener;
     }
 
-    public void setFiles(ArrayList<FileModel> models){
+    public void setFiles(ArrayList<FileModel> models) {
         mFiles.clear();
         mFiles.addAll(models);
         notifyDataSetChanged();
@@ -39,12 +39,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileViewHold
 
     @Override
     public FileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FileViewHolder(LayoutInflater.from(mContext).inflate(R.layout.view_file_item,parent,false));
+        return new FileViewHolder(LayoutInflater.from(mContext).inflate(R.layout.view_file_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(FileViewHolder holder, int position) {
-        if(holder != null){
+        if (holder != null) {
             holder.configureView(mFiles.get(position));
         }
     }
@@ -66,25 +66,27 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileViewHold
             itemView.setOnClickListener(this);
         }
 
-        public void configureView(FileModel model){
+        public void configureView(FileModel model) {
             mTVFileName.setText(model.toString());
             mIVFileImage.setImageDrawable(null);
-            if(!model.isDirectory()){
+            if (model.isImageFile()) {
                 mIVFileImage.setImageURI(Uri.fromFile(new File(model.getName())));
-            }else{
+            } else if (model.isDirectory()) {
                 mIVFileImage.setImageResource(R.drawable.folder);
+            } else {
+                mIVFileImage.setImageResource(R.drawable.file);
             }
         }
 
         @Override
         public void onClick(View v) {
-            if(mOnFileSelectedListener != null){
+            if (mOnFileSelectedListener != null) {
                 mOnFileSelectedListener.onFileSelectedListener(mFiles.get(getAdapterPosition()));
             }
         }
     }
 
-    public interface OnFileSelectedListener{
+    public interface OnFileSelectedListener {
         void onFileSelectedListener(FileModel model);
     }
 }

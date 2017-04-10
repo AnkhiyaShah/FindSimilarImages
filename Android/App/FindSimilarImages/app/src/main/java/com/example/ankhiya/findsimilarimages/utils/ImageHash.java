@@ -42,12 +42,12 @@ public class ImageHash {
     private static String convertHashToString(byte[] md5Bytes) {
         String returnVal = "";
         for (int i = 0; i < md5Bytes.length; i++) {
-            returnVal += Integer.toString(( md5Bytes[i] & 0xff ) + 0x100, 16).substring(1);
+            returnVal += Integer.toString((md5Bytes[i] & 0xff) + 0x100, 16).substring(1);
         }
         return returnVal.toUpperCase();
     }
 
-    public static boolean isFileContentTypeImage(Context context, String filePath) {
+    public static boolean isFileContentTypeImage(String filePath) {
         boolean imageType = false;
         String extension = MimeTypeMap.getFileExtensionFromUrl(filePath);
         String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
@@ -55,5 +55,19 @@ public class ImageHash {
             imageType = true;
         }
         return imageType;
+    }
+
+    public static boolean isFileContentTypeAudio(String filePath) {
+        boolean audioType = false;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(filePath);
+        String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (type != null) {
+            if (type.contains("audio")) {
+                audioType = true;
+            } else if(type.contains("ogg")){
+                audioType = true;
+            }
+        }
+        return audioType;
     }
 }

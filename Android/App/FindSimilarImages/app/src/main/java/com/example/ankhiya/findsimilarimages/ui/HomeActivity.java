@@ -14,6 +14,7 @@ import com.example.ankhiya.findsimilarimages.R;
 import com.example.ankhiya.findsimilarimages.operations.SimilarImagesFinder;
 import com.example.ankhiya.findsimilarimages.utils.FileModel;
 import com.example.ankhiya.findsimilarimages.utils.FilesAdapter;
+import com.example.ankhiya.findsimilarimages.utils.ImageHash;
 import com.example.ankhiya.findsimilarimages.utils.SearchMode;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SimilarImagesFinder(HomeActivity.this, HomeActivity.this).execute(mCurrentDirectory);
+                onClickOnSearch();
             }
         });
         mDeleteButton.setVisibility(View.GONE);
@@ -67,16 +68,20 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
         populateListOfFiles();
     }
 
+    private void onClickOnSearch() {
+        new SimilarImagesFinder(HomeActivity.this, HomeActivity.this, mSearchMode,mListFiles).execute(mCurrentDirectory);
+    }
+
     private void onDeleteFiles() {
         for (FileModel model : mListFiles) {
             File file = new File(model.getName());
             file.delete();
         }
         mListFiles.clear();
-        mCurrentDirectory = mBasePath;
-        populateListOfFiles();
+        Toast.makeText(this, "Deleted successfully", Toast.LENGTH_LONG).show();
         mSearchButton.setVisibility(View.VISIBLE);
         mDeleteButton.setVisibility(View.GONE);
+        this.onBackPressed();
     }
 
     private void initData() {
@@ -103,6 +108,11 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
             for (File file : files) {
                 FileModel model = new FileModel();
                 model.setName(file.getAbsolutePath());
+                if(ImageHash.isFileContentTypeImage(model.getName())){
+                    model.setImageFile(true);
+                }else if(ImageHash.isFileContentTypeAudio(model.getName())){
+                    model.setAudioFile(true);
+                }
                 mListFiles.add(model);
             }
             mFilesAdapter.setFiles(mListFiles);
@@ -118,6 +128,17 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
 
     @Override
     public void similarImagesPaths(ArrayList<String> paths) {
+        if (paths == null) {
+            return;
+        }
+        if (paths.size() == 0) {
+            if(mSearchMode == SearchMode.IMAGE) {
+                Toast.makeText(this, "No similar images found", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this, "No similar audio files found", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
         mSearchButton.setVisibility(View.GONE);
         mDeleteButton.setVisibility(View.VISIBLE);
         mListFiles.clear();
@@ -143,12 +164,11 @@ public class HomeActivity extends AppCompatActivity implements SimilarImagesFind
 
     @Override
     public void onBackPressed() {
-        if(mPathsSelectionList.size() > 1) {
+        if (mPathsSelectionList.size() > 1) {
             mPathsSelectionList.remove(mPathsSelectionList.size() - 1);
             mCurrentDirectory = mPathsSelectionList.get(mPathsSelectionList.size() - 1);
             populateListOfFiles();
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
     }

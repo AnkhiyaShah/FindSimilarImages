@@ -12,6 +12,9 @@ public class FileModel {
 
     private String name;
     private boolean isDirectory;
+    private boolean isImageFile;
+    private boolean isAudioFile;
+
 
     public String getName() {
         return name;
@@ -23,6 +26,22 @@ public class FileModel {
             File file = new File(this.name);
             isDirectory = file.isDirectory();
         }
+    }
+
+    public boolean isImageFile() {
+        return isImageFile;
+    }
+
+    public void setImageFile(boolean imageFile) {
+        isImageFile = imageFile;
+    }
+
+    public boolean isAudioFile() {
+        return isAudioFile;
+    }
+
+    public void setAudioFile(boolean audioFile) {
+        isAudioFile = audioFile;
     }
 
     public boolean isDirectory() {
