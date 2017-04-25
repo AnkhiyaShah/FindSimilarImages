@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -8,16 +9,30 @@
     android:orientation="vertical"
     >
 
-   <Button
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="Images"
-       android:id="@+id/btn_find_images"/>
+    <Button
+        android:id="@+id/btn_find_images"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:text="Images"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="#009688"
+        android:textColor="#E0E0E0" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_find_audios"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Audios"
-        android:id="@+id/btn_find_audios"/>
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="#009688"
+        android:background="#E0E0E0" />
 
-</LinearLayout>
+</RelativeLayout>
